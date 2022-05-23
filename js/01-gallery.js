@@ -1,9 +1,9 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 // console.log(galleryItems);
 
-function createGalleryMurkup (items) {
+function createGalleryMurkup(items) {
   return items
     .map(({ preview, original, description }) => {
       return `<div class="gallery__item">
@@ -16,34 +16,40 @@ function createGalleryMurkup (items) {
           />
         </a>
         </div>`;
-      }).join('');
+    })
+    .join("");
 }
 
 function onGalleryContainerClick(e) {
   e.preventDefault();
 
-  const galleryItem =e.target.classList.contains('gallery__image');
-  const largeImageLink =e.target.dataset.source;
+  const galleryItem = e.target.classList.contains("gallery__image");
+  const largeImageLink = e.target.dataset.source;
+  const largeImageAlt = e.target.alt;
   if (!galleryItem) {
     return;
   }
-  const instance = basicLightbox.create(`<img src="${largeImageLink}">`,
-    { onShow: () => {window.addEventListener('keydown', onEscPress) } },
-    );
+  const instance = basicLightbox.create(
+    `<img src="${largeImageLink}" alt="${largeImageAlt}">`,
+    {
+      onShow: () => {
+        window.addEventListener("keydown", onEscPress);
+      },
+    }
+  );
 
   instance.show();
 
   function onEscPress(e) {
-        if (e.code === 'Escape') {
-            instance.close();
-            window.removeEventListener('keydown', onEscPress);
-        }
+    if (e.code === "Escape") {
+      instance.close();
+      window.removeEventListener("keydown", onEscPress);
+    }
   }
+}
 
-};
-
-const galleryContainerRef = document.querySelector('.gallery');
+const galleryContainerRef = document.querySelector(".gallery");
 const galleryMarkup = createGalleryMurkup(galleryItems);
 
-galleryContainerRef.insertAdjacentHTML('beforeend', galleryMarkup);
-galleryContainerRef.addEventListener('click', onGalleryContainerClick);
+galleryContainerRef.insertAdjacentHTML("beforeend", galleryMarkup);
+galleryContainerRef.addEventListener("click", onGalleryContainerClick);
